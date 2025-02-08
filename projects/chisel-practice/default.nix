@@ -36,7 +36,7 @@ mkSbtDerivation {
     runHook postBuild
   '';
 
-  depsSha256 = "sha256-RJbjDFGLjzXsJmsT9KyPvwz9HWhhjye/MTMG799/9Qo=";
+  depsSha256 = "sha256-JVc5cZUOhAp6DOi6DPXLtxAadAFk51EIYrDLuhFSvOY=";
 
   doCheck = true;
   checkPhase = ''
