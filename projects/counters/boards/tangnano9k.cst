@@ -36,4 +36,5 @@ IO_LOC "segments[6]" 54; // G
 IO_LOC "segments[7]" 57; // DP
 
 IO_LOC "clk" 52;
-IO_LOC "rst" 4;
+IO_LOC "btn0" 4;
+IO_LOC "btn1" 3;
