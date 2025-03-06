@@ -5,3 +5,5 @@
 .metals/
 out/
 result
+*.vcd
+a.out

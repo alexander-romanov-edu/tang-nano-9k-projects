@@ -17,6 +17,7 @@
         verible
         gtkwave
         netlistsvg
+        iverilog
       ]
       ++ (with pkgs.python3Packages; [
         apycula
