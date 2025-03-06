@@ -1,5 +1,5 @@
 module vcbd_m_se #(
-    parameter int WIDTH
+    parameter int WIDTH = 4
 ) (
     input ce,
     input clk,

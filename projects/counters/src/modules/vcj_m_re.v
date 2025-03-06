@@ -1,5 +1,5 @@
 module vcj_m_re #(
-    parameter int WIDTH
+    parameter int WIDTH = 4
 ) (
     input ce,
     input clk,

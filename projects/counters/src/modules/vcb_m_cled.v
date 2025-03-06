@@ -1,5 +1,5 @@
 module vcb_m_cled #(
-    parameter int WIDTH
+    parameter int WIDTH = 4
 ) (
     input ce,
     input up,
