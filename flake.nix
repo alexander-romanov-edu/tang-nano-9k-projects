@@ -3,11 +3,17 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     sbt = {
       url = "github:zaninime/sbt-derivation";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,7 +46,12 @@
           ];
 
           checks = {
-            inherit (self'.packages) blinky chisel-practice chisel-blinky;
+            inherit (self'.packages)
+              blinky
+              chisel-practice
+              chisel-blinky
+              counters
+              ;
           };
 
           _module.args.pkgs = import nixpkgs {
