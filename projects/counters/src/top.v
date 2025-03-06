@@ -14,7 +14,7 @@ module top (
   ) counters_top (
       .clk(clk),
       .rst(rst),
-      .btn1(btn1),
+      .btn1(~btn1),
       .switch(switch),
       .digits(digits),
       .segments(segments),
