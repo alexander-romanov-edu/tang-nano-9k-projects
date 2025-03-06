@@ -68,7 +68,7 @@ module counters #(
       .ce (vcd_re_ceo),
       .up (switch[6]),
       .di (switch[3:0]),
-      .l  (0),
+      .l  (1'b0),
       .clk(clk),
       .clr(rst),
       .q  (dat[15:12])

@@ -11,9 +11,7 @@ module vcbd_m_se #(
   assign tc  = (q == 0);
   assign ceo = ce & tc;
 
-  wire max = ((1 << WIDTH) - 1);
-
   always @(posedge clk) begin
-    q <= rst ? max : (ce ? q - 1 : q);
+    q <= rst ? (1 << WIDTH) - 1 : (ce ? q - 1 : q);
   end
 endmodule
