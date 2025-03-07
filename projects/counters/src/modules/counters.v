@@ -31,11 +31,19 @@ module counters #(
       .ce  (ce1ms)
   );
 
+  wire btn1_debounced;
+  debouncer debouncer (
+      .clk(clk),
+      .ce1ms(ce1ms),
+      .btn_in(btn1),
+      .btn_out(btn1_debounced)
+  );
+
   wire vcb4re_ceo;
   vcb_m_re #(
       .WIDTH(4)
   ) vcb4re (
-      .ce (ce1s_n_ms),
+      .ce (btn1_debounced),
       .clk(clk),
       .rst(rst),
       .q  (dat[3:0]),
@@ -46,7 +54,7 @@ module counters #(
   vcbd_m_se #(
       .WIDTH(4)
   ) vcbd4se (
-      .ce (vcb4re_ceo),
+      .ce (btn1_debounced),
       .clk(clk),
       .rst(rst),
       .q  (dat[7:4]),
@@ -55,7 +63,7 @@ module counters #(
 
   wire vcd_re_ceo;
   vcd_re vcd_re (
-      .ce (vcbd4se_ceo),
+      .ce (btn1_debounced),
       .clk(clk),
       .rst(rst),
       .q  (dat[11:8]),
@@ -65,10 +73,10 @@ module counters #(
   vcb_m_cled #(
       .WIDTH(4)
   ) vcb_m_cled (
-      .ce (vcd_re_ceo),
+      .ce (btn1_debounced),
       .up (switch[6]),
       .di (switch[3:0]),
-      .l  (btn1),
+      .l  (1'b0),
       .clk(clk),
       .clr(rst),
       .q  (dat[15:12])
