@@ -31,41 +31,41 @@ module counters #(
       .ce  (ce1ms)
   );
 
-  wire vcb4re_ceo;
-  vcb_m_re #(
-      .WIDTH(4)
-  ) vcb4re (
+  wire vcj4re_ceo;
+  vcj_m_re #(
+    .WIDTH(4)
+  ) vcj4re (
       .ce (ce1s_n_ms),
       .clk(clk),
       .rst(rst),
       .q  (dat[3:0]),
-      .ceo(vcb4re_ceo)
-  );
-
-  wire vcbd4se_ceo;
-  vcbd_m_se #(
-      .WIDTH(4)
-  ) vcbd4se (
-      .ce (vcb4re_ceo),
-      .clk(clk),
-      .rst(rst),
-      .q  (dat[7:4]),
-      .ceo(vcbd4se_ceo)
+      .ceo(vcj4re_ceo)
   );
 
   wire vcd_re_ceo;
   vcd_re vcd_re (
-      .ce (vcbd4se_ceo),
+      .ce (vcj4re_ceo),
+      .clk(clk),
+      .rst(rst),
+      .q  (dat[7:4]),
+      .ceo(vcd_re_ceo)
+  );
+
+  wire vcb4re_ceo;
+  vcb_m_re #(
+      .WIDTH(4)
+  ) vcb4re (
+      .ce (vcd_re_ceo),
       .clk(clk),
       .rst(rst),
       .q  (dat[11:8]),
-      .ceo(vcd_re_ceo)
+      .ceo(vcb4re_ceo)
   );
 
   vcb_m_cled #(
       .WIDTH(4)
   ) vcb_m_cled (
-      .ce (vcd_re_ceo),
+      .ce (vcb4re_ceo),
       .up (switch[6]),
       .di (switch[3:0]),
       .l  (btn1),
