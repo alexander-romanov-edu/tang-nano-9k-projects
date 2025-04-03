@@ -18,6 +18,7 @@
         gtkwave
         netlistsvg
         iverilog
+        yosys-synlig
       ]
       ++ (with pkgs.python3Packages; [
         apycula

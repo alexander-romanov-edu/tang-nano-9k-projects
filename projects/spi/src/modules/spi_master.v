@@ -42,7 +42,7 @@ module spi_master #(
     sr_mrx <= sr_mrx << 1 | miso;
   end
 
-  always @(posedge load or posedge clr) begin
-    dout <= clr ? 0 : sr_mrx;
+  always @(posedge load) begin
+    dout <= sr_mrx;
   end
 endmodule

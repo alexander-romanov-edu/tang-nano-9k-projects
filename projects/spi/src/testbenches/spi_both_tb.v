@@ -7,7 +7,6 @@ module spi_both_tb;
   reg [WIDTH-1:0] mtx_dat;
   reg [WIDTH-1:0] stx_dat;
   reg rst;
-  reg slave_load;
 
   wire mosi;
   wire miso;
@@ -18,34 +17,24 @@ module spi_both_tb;
     $dumpvars(0, spi_both_tb);
 
     st = 0;
-    slave_load = 0;
     rst = 0;
     stx_dat = 0;
     mtx_dat = 0;
-
     #26;
 
     st = 1;
-    slave_load = 1;
-
     #2;
-    st = 0;
-    slave_load = 0;
 
+    mtx_dat = 13'b1001001001001;
+    stx_dat = 13'b0101001011001;
+    st = 0;
     #128;
 
     st = 1;
-    slave_load = 1;
-    mtx_dat = 13'b1001001001001;
-    stx_dat = 13'b0101001011001;
-
     #2;
     st = 0;
-    slave_load = 0;
 
     #128;
-
-    #2;
 
     st  = 1;
     rst = 0;
