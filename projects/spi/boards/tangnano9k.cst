@@ -1,0 +1,40 @@
+// https://wiki.sipeed.com/hardware/en/tang/Tang-Nano-9K/Nano-9K.html#Pinmap
+// https://wiki.sipeed.com/hardware/en/tang/Tang-Nano-9K/examples/led.html 
+// https://github.com/YosysHQ/apicula/blob/master/examples/tangnano9k.cst
+// Part Number: GW1NR-LV9QN88PC6/I5
+
+IO_LOC "switch[0]" 33; 
+IO_LOC "switch[1]" 30;
+IO_LOC "switch[2]" 29;
+IO_LOC "switch[3]" 28;
+IO_LOC "switch[4]" 26;
+IO_LOC "switch[5]" 25;
+IO_LOC "switch[6]" 39;
+IO_LOC "switch[7]" 36;
+
+IO_LOC "led[0]" 76;
+IO_LOC "led[1]" 38;
+IO_LOC "led[2]" 37;
+IO_LOC "led[3]" 27;
+IO_LOC "led[4]" 51;
+IO_LOC "led[5]" 42;
+IO_LOC "led[6]" 40;
+IO_LOC "led[7]" 34;
+
+IO_LOC "digits[0]" 75;
+IO_LOC "digits[1]" 72;
+IO_LOC "digits[2]" 73;
+IO_LOC "digits[3]" 74;
+
+IO_LOC "segments[0]" 71; // A
+IO_LOC "segments[1]" 31; // B
+IO_LOC "segments[2]" 53; // C
+IO_LOC "segments[3]" 56; // D
+IO_LOC "segments[4]" 55; // E
+IO_LOC "segments[5]" 70; // F
+IO_LOC "segments[6]" 54; // G
+IO_LOC "segments[7]" 57; // DP
+
+IO_LOC "clk" 52;
+IO_LOC "btn0" 4;
+IO_LOC "btn1" 3;

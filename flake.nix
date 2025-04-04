@@ -51,6 +51,7 @@
               chisel-practice
               chisel-blinky
               counters
+              spi
               ;
           };
 
