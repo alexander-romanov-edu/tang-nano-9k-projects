@@ -27,7 +27,7 @@ $(BUILD_DIR)/%.vcd: $(BUILD_DIR)/%
 	cd $(BUILD_DIR) && $(VVP) $(notdir $<)
 
 $(BUILD_DIR)/top.json: $(modules) src/top.v
-	$(YOSYS) -D CLKFREQ=$(CLKFREQ) -p "read_verilog -sv src/top.v $(modules); synth_gowin -json $(BUILD_DIR)/top.json"
+	$(YOSYS) -p "plugin -i systemverilog" -p "read_systemverilog src/top.v $(modules); synth_gowin -json $(BUILD_DIR)/top.json"
 
 $(BUILD_DIR)/pnrtop.json: $(BUILD_DIR)/top.json boards/tangnano9k.cst
 	$(NEXTPNR) --json $< --write $@ --device $(NEXTPNR_DEVICE) \

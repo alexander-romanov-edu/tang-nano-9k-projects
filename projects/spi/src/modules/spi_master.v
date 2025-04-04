@@ -1,91 +1,48 @@
-module SPIMaster #(
-  parameter DATA_WIDTH = 8,  // Data width (default is 8 bits)
-  parameter CLK_DIV_WIDTH = 8 // Clock divider width (default is 8 bits)
-)(
-  input wire clk,            // System clock
-  input wire reset,          // Asynchronous reset
-  input wire start,          // Start signal to initiate SPI transaction
-  input wire [DATA_WIDTH-1:0] data_in, // Data to transmit
-  output wire sclk,          // SPI clock
-  output wire mosi,          // Master Out Slave In (data line)
-  input wire miso,           // Master In Slave Out (data line)
-  output wire ss,            // Slave Select (active low)
-  output wire [DATA_WIDTH-1:0] data_out, // Received data from slave
-  output wire busy           // Busy signal (high during transaction)
+module spi_master #(
+    parameter int CLKFREQ = 27000000,  // 27MHz
+    parameter int WIDTH = 13,
+    parameter int SPIFREQ = 100000  // 100KHz = 10us
+) (
+    input st,
+    input clk,
+
+    output reg sclk = 0,
+    output reg load = 1,
+    output wire mosi,
+    input miso,
+
+    input [WIDTH-1:0] din,
+    output reg [WIDTH-1:0] dout = 0,
+    input clr,
+    output reg [WIDTH-1:0] sr_mtx = 0,
+    output reg [WIDTH-1:0] sr_mrx = 0,
+    output reg [7:0] cb_bit = 0,
+    output wire ce,
+    output wire ce_tact
 );
+  localparam int NT = CLKFREQ / (2 * SPIFREQ);
 
-  // Internal registers and wires
-  reg [CLK_DIV_WIDTH-1:0] clk_div;      // Clock divider counter
-  reg [DATA_WIDTH-1:0] shift_reg_rx;    // Shift register for received data
-  reg [DATA_WIDTH-1:0] bit_counter;     // Bit counter
-  reg sclk_reg;                         // SCLK register
-  reg load_reg;                         // Load register
-  reg busy_reg;                         // Busy register
+  reg [8:0] cb_tact = 0;
 
-  // Clock divider logic
-  always @(posedge clk or posedge reset) begin
-    if (reset) begin
-      clk_div <= 0;
-      sclk_reg <= 0;
-    end else begin
-      if (clk_div == (CLK_DIV_WIDTH-1)) begin
-        clk_div <= 0;
-        sclk_reg <= ~sclk_reg; // Toggle SCLK
-      end else begin
-        clk_div <= clk_div + 1;
-      end
-    end
+  assign ce = (cb_tact == NT - 1);
+  assign mosi = sr_mtx[WIDTH-1];
+  assign ce_tact = ce & sclk;
+
+  wire start = st & load;
+
+  always @(posedge clk) begin
+    load <= st ? 0 : ((cb_bit == WIDTH - 1) & ce_tact) ? 1 : load;
+    cb_tact <= (start | ce) ? 0 : cb_tact + 1;
+    sclk <= load ? 0 : ce ? !sclk : sclk;
+    sr_mtx <= start ? din : ce_tact ? sr_mtx << 1 : sr_mtx;
+    cb_bit <= start ? 0 : ce_tact ? cb_bit + 1 : cb_bit;
   end
 
-  // Assign SCLK output
-  assign sclk = sclk_reg;
-
-  // Bit counter logic
-  always @(posedge clk or posedge reset) begin
-    if (reset) begin
-      bit_counter <= 0;
-      busy_reg <= 0;
-      load_reg <= 0;
-    end else if (start && !busy_reg) begin
-      bit_counter <= 0;
-      busy_reg <= 1;
-      load_reg <= 1;
-    end else if (busy_reg) begin
-      if (sclk_reg && clk_div == 0) begin
-        if (bit_counter == (DATA_WIDTH-1)) begin
-          busy_reg <= 0;
-        end else begin
-          bit_counter <= bit_counter + 1;
-        end
-      end
-      load_reg <= 0;
-    end
+  always @(posedge sclk) begin
+    sr_mrx <= sr_mrx << 1 | miso;
   end
 
-  // Shift register for transmitted data
-  always @(posedge clk or posedge reset) begin
-    if (reset) begin
-      shift_reg_rx <= 0;
-    end else if (load_reg) begin
-      shift_reg_rx <= data_in; // Load data to transmit
-    end else if (sclk_reg && clk_div == 0 && busy_reg) begin
-      shift_reg_rx <= {shift_reg_tx[DATA_WIDTH-2:0], 1'b0}; // Shift out data
-    end
+  always @(posedge load) begin
+    dout <= sr_mrx;
   end
-
-  // Shift register for received data
-  always @(posedge clk or posedge reset) begin
-    if (reset) begin
-      shift_reg_rx <= 0;
-    end else if (!sclk_reg && clk_div == 0 && busy_reg) begin
-      shift_reg_rx <= {shift_reg_rx[DATA_WIDTH-2:0], miso}; // Shift in data
-    end
-  end
-
-  // Assign outputs
-  assign mosi = shift_reg_rx[DATA_WIDTH-1]; // Transmit MSB first
-  reg [DATA_WIDTH-1:0] shift_reg_tx;    // Shift register for transmitted data
-  assign ss = ~busy_reg; // Slave Select is active low
-  assign data_out = shift_reg_rx; // Received data
-  assign busy = busy_reg; // Busy signal
 endmodule
