@@ -16,13 +16,16 @@ module top (
   wire rst = ~btn0;
   wire load;
   reg led_state = 0;
+  wire ce1s_n_ms;
 
   always @(posedge load) begin
-    led_state <= !led_state;
+    led_state[0] <= !led_state[0];
+    mtx_dat <= mtx_dat + 1;
   end
 
   spi #(
       .CLKFREQ(27000000),
+      .SPIFREQ(10000),
       .WIDTH  (`WIDTH)
   ) spi_top (
       .clk(clk),
@@ -32,13 +35,9 @@ module top (
       .segments(segments),
       .load(load),
       .mtx_dat(mtx_dat),
-      .stx_dat(stx_dat)
+      .stx_dat(stx_dat),
+      .ce1s_n_ms(ce1s_n_ms)
   );
-
-  always @(negedge load) begin
-    mtx_dat <= mtx_dat + 1;
-    stx_dat <= stx_dat + 1;
-  end
 
   assign led[0] = led_state;
 endmodule

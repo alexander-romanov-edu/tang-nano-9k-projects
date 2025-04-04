@@ -22,7 +22,7 @@ module spi_master #(
 );
   localparam int NT = CLKFREQ / (2 * SPIFREQ);
 
-  reg [8:0] cb_tact = 0;
+  reg [31:0] cb_tact = 0;
 
   assign ce = (cb_tact == NT - 1);
   assign mosi = sr_mtx[WIDTH-1];
