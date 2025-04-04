@@ -13,16 +13,17 @@ module spi_slave #(
 );
   assign miso = sr_stx[WIDTH-1];
 
+  always @(posedge load) begin
+    sr_stx = din;
+    dout   = sr_srx;
+  end
+
   always @(posedge sclk) begin
     sr_srx <= sr_srx << 1 | mosi;
   end
 
-  always @(posedge load) begin
-    dout <= sr_srx;
-  end
-
   always @(negedge sclk) begin
-    sr_stx <= load ? din : sr_stx << 1;
+    sr_stx <= sr_stx << 1;
   end
 endmodule
 

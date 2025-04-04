@@ -24,8 +24,8 @@ module spi #(
     output wire ce1s_n_ms
 );
 
-  reg [WIDTH-1:0] mrx_dat;
-  reg [WIDTH-1:0] srx_dat;
+  wire [WIDTH-1:0] mrx_dat;
+  wire [WIDTH-1:0] srx_dat;
 
   wire [WIDTH-1:0] sr_mtx;
   wire [WIDTH-1:0] sr_mrx;
