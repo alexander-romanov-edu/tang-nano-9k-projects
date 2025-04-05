@@ -1,5 +1,5 @@
 YOSYS = yosys
-NEXTPNR = nextpnr-himbaechel
+NEXTPNR = nextpnr-gowin
 NEXTPNR_DEVICE = GW1NR-LV9QN88PC6/I5
 NEXTPNR_FAMILY = GW1N-9C
 APICULA = gowin_pack
@@ -31,7 +31,7 @@ $(BUILD_DIR)/top.json: $(modules) src/top.v
 
 $(BUILD_DIR)/pnrtop.json: $(BUILD_DIR)/top.json boards/tangnano9k.cst
 	$(NEXTPNR) --json $< --write $@ --device $(NEXTPNR_DEVICE) \
-		--vopt cst=boards/tangnano9k.cst --vopt family=$(NEXTPNR_FAMILY)
+		--cst boards/tangnano9k.cst --family $(NEXTPNR_FAMILY)
 
 $(BUILD_DIR)/top.fs: $(BUILD_DIR)/pnrtop.json
 	$(APICULA) -d $(NEXTPNR_FAMILY) -o $@ $<

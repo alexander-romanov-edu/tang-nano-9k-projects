@@ -8,19 +8,22 @@ module top (
 
     output wire [3:0] digits,
     output wire [7:0] segments,
-    output wire [7:0] led
+    output wire [7:0] led,
+
+    output wire load,
+    output wire mosi,
+    output wire miso,
+    output wire sclk
 );
   reg [`WIDTH-1:0] mtx_dat = 13'h1dad;
   reg [`WIDTH-1:0] stx_dat = 13'h0ced;
 
   wire rst = ~btn0;
-  wire load;
   reg led_state = 0;
   wire ce1s_n_ms;
 
   always @(posedge load) begin
     led_state[0] <= !led_state[0];
-    mtx_dat <= mtx_dat + 1;
   end
 
   spi #(
@@ -33,6 +36,9 @@ module top (
       .sw(switch[7:0]),
       .digits(digits),
       .segments(segments),
+      .sclk(sclk),
+      .miso(miso),
+      .mosi(mosi),
       .load(load),
       .mtx_dat(mtx_dat),
       .stx_dat(stx_dat),

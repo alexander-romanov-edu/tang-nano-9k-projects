@@ -38,3 +38,8 @@ IO_LOC "segments[7]" 57; // DP
 IO_LOC "clk" 52;
 IO_LOC "btn0" 4;
 IO_LOC "btn1" 3;
+
+IO_LOC "sclk" 85;
+IO_LOC "miso" 84;
+IO_LOC "mosi" 83;
+IO_LOC "load" 82;
