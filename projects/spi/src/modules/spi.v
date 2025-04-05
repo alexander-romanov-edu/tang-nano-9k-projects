@@ -10,7 +10,6 @@ module spi #(
     output wire miso,
     output wire mosi,
 
-    input st,
     input clk,
     input rst,
 
@@ -57,8 +56,6 @@ module spi #(
       .ce  (ce1ms)
   );
 
-  assign st = ce1s_n_ms;
-
   mux64_16 mux (
       .dat({  /*0*/
         3'd0, mtx_dat,  /*1*/ 3'd0, stx_dat,  /*2*/ 3'd0, mrx_dat,  /*3*/ 3'd0, srx_dat
@@ -73,7 +70,7 @@ module spi #(
       .SPIFREQ(SPIFREQ)
   ) master (
       .clk(clk),
-      .st(st),
+      .st(ce1s_n_ms),
       .din(mtx_dat),
       .dout(mrx_dat),
       .load(load),
