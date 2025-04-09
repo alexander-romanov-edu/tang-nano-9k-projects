@@ -4,6 +4,7 @@
   yosys,
   nextpnr,
   iverilog,
+  yosys-synlig,
   python3Packages,
 }:
 stdenvNoCC.mkDerivation {
@@ -17,6 +18,7 @@ stdenvNoCC.mkDerivation {
     nextpnr
     iverilog
     python3Packages.apycula
+    yosys-synlig
   ];
 
   installPhase = ''
