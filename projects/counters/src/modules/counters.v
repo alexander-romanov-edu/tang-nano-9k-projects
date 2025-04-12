@@ -32,7 +32,7 @@ module counters #(
       .ce  (ce1ms)
   );
 
-reg [15:0] freq;
+  reg [15:0] freq;
   freqcounter #(
       .WIDTH(16)
   ) freqcounter (

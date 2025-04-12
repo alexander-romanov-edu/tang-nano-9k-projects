@@ -21,6 +21,6 @@ module spi_master_tb;
   ) master (
       .st (st),
       .clk(clk),
-      .din(13'b1001001001001) // 0x1249
+      .din(13'b1001001001001)
   );
 endmodule
