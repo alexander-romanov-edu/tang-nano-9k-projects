@@ -15,8 +15,8 @@ module top (
     output wire miso,
     output wire sclk
 );
-  reg [`WIDTH-1:0] mtx_dat = 13'h1dad;
-  reg [`WIDTH-1:0] stx_dat = 13'h0ced;
+  reg [`WIDTH-1:0] mtx_dat = 13'h2cc;
+  reg [`WIDTH-1:0] stx_dat = 13'h6d9;
 
   wire rst = ~btn0;
   reg led_state = 0;
